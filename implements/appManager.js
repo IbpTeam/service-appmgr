@@ -3,9 +3,10 @@ var fs = require('fs'),
     path = require("path"),
     http = require('http'),
     exec = require('child_process').exec,
-    config = require('../../../config'),
-    flowctl = require('../../../sdk/utils/flowctl'),
-    json4line = require('../../../sdk/utils/json4line');
+    config = require('systemconfig'),
+    utils = require('utils'),
+    flowctl = utils.Flowctl(),
+    json4line = utils.Json4line();
     // router = require('../router'),
 
 function AppMgr(ret_) {

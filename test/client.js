@@ -1,4 +1,4 @@
-var requireProxy = require('../../../sdk/lib/requireProxy').requireProxy;
+var requireProxy = require('../../../app/demo-rio/sdk/lib/requireProxy').requireProxy;
 requireProxy(['appmgr'], function(appmgr) {
   appmgr.getRegisteredApp(function(ret) {
     if(ret.err) return console.log('Registered app error:', ret.err);
