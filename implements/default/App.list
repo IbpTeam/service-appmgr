@@ -26,5 +26,9 @@
   "music-app": {
     "id": "music-app",
     "path": "demo-webde/nw/app/music"
+  },
+  "api-test": {
+    "id": "api-test",
+    "path": "../framework/api/test/apitest"
   }
 }
