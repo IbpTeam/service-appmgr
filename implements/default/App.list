@@ -1,4 +1,8 @@
 {
+  "desktop-app": {
+    "id": "desktop-app",
+    "path": "demo-webde/nw"
+  },
   "sina-app": {
     "id": "sina-app",
     "path": "demo-webde/nw/app/test-app"
