@@ -3,6 +3,7 @@ var fs = require('fs'),
     path = require("path"),
     http = require('http'),
     exec = require('child_process').exec,
+    spawn = require('child_process').spawn,
     config = require('systemconfig'),
     utils = require('utils'),
     flowctl = utils.Flowctl(),
@@ -336,7 +337,7 @@ AppMgr.prototype._createWindow = function(appInfo_) {
 AppMgr.prototype.startApp = function(appInfo_, params_, callback_) {
   var cb_ = callback_ || function() {},
       p_ = params_ || null,
-      cmd_ = 'nw ' + appInfo_.path;
+      cmd_ = 'nw';
   try {
     // TODO: only App in a web browser
     // var win = this._createWindow(appInfo_);
@@ -347,11 +348,18 @@ AppMgr.prototype.startApp = function(appInfo_, params_, callback_) {
       // win.appendHtml(path.join(appInfo_.path, appInfo_.main)
         // + '?id=' + appInfo_.id + (p_ === null ? "" : ("&" + p_)));
     // }
-    exec(cmd_, function(err, stdout, stderr) {
-      if(err) return cb_(err);
-      return cb_(null);
-    })
+    //
+
+    var child = spawn(cmd_, [appInfo_.path], {detached: true});
+    child.on('error', function(err) {
+      console.log('error:', err);
+    }).on('exit', function() {
+      console.log('process exit');
+    });
+    child.unref();
+    cb_(null);
   } catch(e) {
+    console.log(e);
     return cb_(e);
   }
 }
