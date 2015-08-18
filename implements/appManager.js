@@ -592,7 +592,7 @@ var stub = null;
 (function main() {
   var appMgr = new AppMgr({
     success: function() {
-      stub = require('../interface/appmgrStub').getStub(appMgr);
+      stub = require('../interface/stub').getStub(appMgr);
       console.log('App manager start OK');
     },
     fail: function(reason) {
