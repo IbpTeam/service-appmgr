@@ -16,6 +16,7 @@ function AppMgr(ret_) {
     fail: function() {}
   };
   this._AppList = {};
+  this._runlist = new Array();
 
   this._loadAppList(function(err) {
     if(err) {
@@ -334,31 +335,71 @@ AppMgr.prototype._createWindow = function(appInfo_) {
   });
 }
 
+AppMgr.prototype.showStarted = function(callback_) {
+  if (this._runlist.length !== 0) {
+    callback_(this._runlist);
+//    for (var i = 0; i < this._runlist.length; i++) {
+//     console.log(this._runlist[i].pid);
+//   }
+  }else{
+    callback_(null);
+  }
+}
+
+AppMgr.prototype._deletepid = function(pid, callback_) {
+  var self = this;
+  var flag = false;
+  for (var i = 0; i < self._runlist.length; i++) {
+    if (self._runlist[i].pid == pid) {
+      self._runlist.splice(i, 1);
+      flag = true;
+      callback_(true);
+      break;
+    }
+  }
+  if (flag == false) {
+    console.log("No pid in _runlist :", pid);
+    callback_(false);
+  };
+}
+
 AppMgr.prototype.startApp = function(appInfo_, params_, callback_) {
   var cb_ = callback_ || function() {},
-      p_ = params_ || null,
-      cmd_ = 'nw';
+    p_ = params_ || null,
+    cmd_ = 'nw';
+  var childobj_ = {};
+  var self = this;
   try {
     // TODO: only App in a web browser
     // var win = this._createWindow(appInfo_);
     // if this app is genarate from a URL, do something
     // if(appInfo_.url) {
-      // win.appendHtml(appInfo_.main);
+    // win.appendHtml(appInfo_.main);
     // } else {
-      // win.appendHtml(path.join(appInfo_.path, appInfo_.main)
-        // + '?id=' + appInfo_.id + (p_ === null ? "" : ("&" + p_)));
+    // win.appendHtml(path.join(appInfo_.path, appInfo_.main)
+    // + '?id=' + appInfo_.id + (p_ === null ? "" : ("&" + p_)));
     // }
     //
-
-    var child = spawn(cmd_, [appInfo_.path], {detached: true});
+    //console.log(appInfo_);
+    var child = spawn(cmd_, [appInfo_.path], {
+      detached: true
+    });
     child.on('error', function(err) {
       console.log('error:', err);
     }).on('exit', function() {
-      console.log('process exit');
+      self._deletepid(child.pid, function(flag) {
+        if (flag == false) {
+          console.log("wrong pid deleted. ", child.pid);
+        }
+      });
+      console.log('process exit', child.pid);
     });
+    childobj_.pid = child.pid;
+    childobj_.pidinfo = appInfo_;
+    this._runlist.push(childobj_);
     child.unref();
     cb_(null);
-  } catch(e) {
+  } catch (e) {
     console.log(e);
     return cb_(e);
   }
