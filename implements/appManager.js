@@ -349,25 +349,20 @@ AppMgr.prototype.showStarted = function(callback_) {
 AppMgr.prototype._deletepid = function(pid, callback_) {
   var self = this;
   var flag = false;
-  for (var i = 0; i < self._runlist.length; i++) {
-    if (self._runlist[i].pid == pid) {
-      self._runlist.splice(i, 1);
-      flag = true;
-      callback_(true);
-      break;
-    }
-  }
-  if (flag == false) {
+  if (self._runlist[pid] !== undefined) {
+    delete self._runlist[pid];
+    callback_(true);
+  } else {
     console.log("No pid in _runlist :", pid);
     callback_(false);
-  };
+  }
 }
 
 AppMgr.prototype.startApp = function(appInfo_, params_, callback_) {
   var cb_ = callback_ || function() {},
     p_ = params_ || null,
     cmd_ = 'nw';
-  var childobj_ = {};
+
   var self = this;
   try {
     // TODO: only App in a web browser
@@ -394,9 +389,7 @@ AppMgr.prototype.startApp = function(appInfo_, params_, callback_) {
       });
       console.log('process exit', child.pid);
     });
-    childobj_.pid = child.pid;
-    childobj_.pidinfo = appInfo_;
-    this._runlist.push(childobj_);
+    self._runlist[child.pid] = appInfo_;
     child.unref();
     cb_(null);
   } catch (e) {
