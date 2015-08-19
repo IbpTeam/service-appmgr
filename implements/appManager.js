@@ -336,10 +336,16 @@ AppMgr.prototype._createWindow = function(appInfo_) {
 }
 
 AppMgr.prototype.showStarted = function(callback_) {
-  if (this._runlist.length !== 0) {
-    callback_(this._runlist);
-  }else{
-    callback_(null);
+  var flag = false;
+  for (k in this._runlist) {
+    flag = true;
+    break;
+  }
+  if (flag == true) {
+    callback_(null, this._runlist);
+  } else {
+    var err = "_runlist empty";
+    callback_(err, null);
   }
 }
 
