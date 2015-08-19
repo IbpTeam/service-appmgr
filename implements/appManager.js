@@ -338,9 +338,6 @@ AppMgr.prototype._createWindow = function(appInfo_) {
 AppMgr.prototype.showStarted = function(callback_) {
   if (this._runlist.length !== 0) {
     callback_(this._runlist);
-//    for (var i = 0; i < this._runlist.length; i++) {
-//     console.log(this._runlist[i].pid);
-//   }
   }else{
     callback_(null);
   }
