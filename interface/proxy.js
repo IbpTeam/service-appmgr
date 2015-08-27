@@ -187,6 +187,34 @@ Proxy.prototype.getRegisteredApp = function(callback) {
 
 /**
  * @description
+ *    Get all started app
+ * @param
+ *    param1: a callback function -> Function
+ *      @description
+ *        a callback function for getting started app
+ *      @param
+ *        param1: the return object -> Object
+ *          {
+ *            err: err description or undefined,
+ *            ret: the list of app ID -> Array
+ *          }
+ * @return
+ *    error or list of app ID
+ */
+Proxy.prototype.showStarted = function(callback) {
+  var l = arguments.length,
+      args = Array.prototype.slice.call(arguments, 0, (typeof callback === 'undefined' ? l : l - 1));
+  this._ipc.invoke({
+    token: this._token++,
+    name: 'showStarted',
+    in: args,
+    callback: callback
+  });
+};
+
+
+/**
+ * @description
  *    Get registered app info by id
  * @param
  *    param1: ID of app -> String
