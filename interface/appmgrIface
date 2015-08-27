@@ -41,6 +41,11 @@
       "name": "generateAppByURL",
       "in": ["String", "Object"],
       "show": "l"
+    },
+    {
+      "name": "showStarted",
+      "in": [],
+      "show": "l"
     }
   ]
 }

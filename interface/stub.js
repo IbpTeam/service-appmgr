@@ -65,6 +65,11 @@ var initObj = {
         "Object"
       ],
       "show": "l"
+    },
+    {
+      "name": "showStarted",
+      "in": [],
+      "show": "l"
     }
   ],
   "serviceObj": {
@@ -137,6 +142,14 @@ var initObj = {
         callback({ret: appID});
       })
     }
+  },
+  showStarted: function(callback){
+    app.showStarted(function(err,_runlist){
+      if (err) {
+        return callback(err: err);
+      }
+      callback({ret: _runlist});
+    })
   }
 }
 
