@@ -146,7 +146,7 @@ var initObj = {
   showStarted: function(callback){
     app.showStarted(function(err,_runlist){
       if (err) {
-        return callback(err: err);
+        return callback({err: err});
       }
       callback({ret: _runlist});
     })
